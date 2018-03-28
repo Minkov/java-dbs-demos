@@ -12,16 +12,16 @@ public class Product {
     int quantity;
     List<String> categories;
 
+    public Product(String name, float price, int quantity) {
+        this(-1, name, price, quantity);
+    }
+
     public Product(int id, String name, float price, int quantity) {
         setId(id);
         setName(name);
         setPrice(price);
         setQuantity(quantity);
         setCategories(new ArrayList<String>());
-    }
-
-    public Product() {
-
     }
 
     public int getId() {
