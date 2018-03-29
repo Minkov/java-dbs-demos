@@ -1,6 +1,5 @@
 package repositories.hibernate;
 
-import entities.Product;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -10,29 +9,28 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
-public class ProductsRepository implements RepositoryBase<Product> {
+public class GenericRepository<T> implements RepositoryBase<T> {
     private SessionFactory session;
     private SessionFactory sessionFactory;
+    private Class<T> entityClass;
 
-    public ProductsRepository(SessionFactory sessionFactory) {
+    public GenericRepository(SessionFactory sessionFactory, Class<T> entityClass) {
         setSessionFactory(sessionFactory);
+        setEntityClass(entityClass);
     }
 
     @Override
-    public List<Product> getAll() throws Exception {
+    public List<T> getAll() throws Exception {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
         CriteriaBuilder builder = session.getCriteriaBuilder();
 
-        CriteriaQuery<Product> criteriaQuery = builder.createQuery(Product.class);
-        criteriaQuery.from(Product.class);
+        CriteriaQuery<T> criteriaQuery = builder.createQuery(getEntityClass());
+        criteriaQuery.from(getEntityClass());
 
-        List<Product> products = session.createQuery(criteriaQuery)
+        List<T> products = session.createQuery(criteriaQuery)
             .getResultList();
-
-        System.out.println();
-        System.out.println(products.get(0).getCategories());
 
         transaction.commit();
         session.close();
@@ -41,7 +39,7 @@ public class ProductsRepository implements RepositoryBase<Product> {
     }
 
     @Override
-    public Product create(Product entity) throws Exception {
+    public T create(T entity) throws Exception {
         Session session = getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
 
@@ -54,13 +52,13 @@ public class ProductsRepository implements RepositoryBase<Product> {
     }
 
     @Override
-    public Product getById(int id) throws Exception {
+    public T getById(int id) throws Exception {
         Session session = getSessionFactory().openSession();
 
-        Product product = session.get(Product.class, id);
+        T entity = session.get(getEntityClass(), id);
 
         session.close();
-        return product;
+        return entity;
     }
 
     public SessionFactory getSessionFactory() {
@@ -69,5 +67,13 @@ public class ProductsRepository implements RepositoryBase<Product> {
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    public Class<T> getEntityClass() {
+        return entityClass;
+    }
+
+    public void setEntityClass(Class<T> entityClass) {
+        this.entityClass = entityClass;
     }
 }

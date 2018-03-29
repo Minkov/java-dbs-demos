@@ -1,6 +1,6 @@
 package repositories.hibernate;
 
-import entities.Product;
+import entities.Category;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -10,38 +10,35 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
-public class ProductsRepository implements RepositoryBase<Product> {
+public class CategoriesRepository implements RepositoryBase<Category> {
     private SessionFactory session;
     private SessionFactory sessionFactory;
 
-    public ProductsRepository(SessionFactory sessionFactory) {
+    public CategoriesRepository(SessionFactory sessionFactory) {
         setSessionFactory(sessionFactory);
     }
 
     @Override
-    public List<Product> getAll() throws Exception {
+    public List<Category> getAll() throws Exception {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
         CriteriaBuilder builder = session.getCriteriaBuilder();
 
-        CriteriaQuery<Product> criteriaQuery = builder.createQuery(Product.class);
-        criteriaQuery.from(Product.class);
+        CriteriaQuery<Category> criteriaQuery = builder.createQuery(Category.class);
+        criteriaQuery.from(Category.class);
 
-        List<Product> products = session.createQuery(criteriaQuery)
+        List<Category> categories = session.createQuery(criteriaQuery)
             .getResultList();
-
-        System.out.println();
-        System.out.println(products.get(0).getCategories());
 
         transaction.commit();
         session.close();
 
-        return products;
+        return categories;
     }
 
     @Override
-    public Product create(Product entity) throws Exception {
+    public Category create(Category entity) throws Exception {
         Session session = getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
 
@@ -54,13 +51,13 @@ public class ProductsRepository implements RepositoryBase<Product> {
     }
 
     @Override
-    public Product getById(int id) throws Exception {
+    public Category getById(int id) throws Exception {
         Session session = getSessionFactory().openSession();
 
-        Product product = session.get(Product.class, id);
+        Category Category = session.get(Category.class, id);
 
         session.close();
-        return product;
+        return Category;
     }
 
     public SessionFactory getSessionFactory() {
