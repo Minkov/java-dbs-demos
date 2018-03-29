@@ -1,11 +1,12 @@
-package com.minkov.repositories;
+package repositories;
 
-import com.minkov.entities.Product;
+import entities.Product;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 public class ProductsRepository extends EntitiesRepository<Product> {
@@ -44,7 +45,7 @@ public class ProductsRepository extends EntitiesRepository<Product> {
         String category = resultSet.getString("Category");
 
         Product product = new Product(id, name, price, quantity);
-        product.addCategory(category);
+//        product.addCategory(category);
 
         return product;
     }
@@ -56,7 +57,7 @@ public class ProductsRepository extends EntitiesRepository<Product> {
 
     @Override
     protected List<String> getColumnNames() {
-        return List.of("id", "name", "price", "quantity");
+        return Arrays.asList("id", "name", "price", "quantity");
     }
 
     @Override
