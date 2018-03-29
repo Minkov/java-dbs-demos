@@ -1,4 +1,4 @@
-package repositories;
+package repositories.sql;
 
 import entities.Category;
 
@@ -9,8 +9,8 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-public class CategoriesRepository extends EntitiesRepository<Category> {
-    public CategoriesRepository(Connection connection) {
+public class SqlCategoriesRepository extends SqlEntityRepository<Category> {
+    public SqlCategoriesRepository(Connection connection) {
         super(connection);
     }
 

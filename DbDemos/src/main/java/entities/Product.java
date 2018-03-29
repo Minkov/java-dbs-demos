@@ -1,10 +1,10 @@
 package entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.text.MessageFormat;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "products")
@@ -13,7 +13,7 @@ public class Product {
     String name;
     float price;
     int quantity;
-//    List<String> categories;
+    private Set<Category> categories;
 
     public Product() {
 
@@ -28,10 +28,11 @@ public class Product {
         setName(name);
         setPrice(price);
         setQuantity(quantity);
-//        setCategories(new ArrayList<String>());
+        setCategories(new HashSet<Category>());
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;
@@ -75,10 +76,11 @@ public class Product {
             getId(),
             getName(),
             getPrice(),
-            getQuantity()
-//            getCategories()
-//                .stream()
-//                .collect(Collectors.joining(", "))
+            getQuantity(),
+            getCategories()
+                .stream()
+                .map(Category::toString)
+                .collect(Collectors.joining(", "))
         );
     }
 
@@ -86,6 +88,21 @@ public class Product {
 //        getCategories()
 //            .add(categoryName);
 //    }
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "products_categories",
+        joinColumns = {@JoinColumn(name = "product_id")},
+        inverseJoinColumns = {@JoinColumn(name = "category_id")}
+    )
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
+
 
 //    public void setCategories(ArrayList<String> categories) {
 //        this.categories = categories;

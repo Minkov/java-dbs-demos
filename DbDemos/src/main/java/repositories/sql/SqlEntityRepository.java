@@ -1,4 +1,4 @@
-package repositories;
+package repositories.sql;
 
 import repositories.base.RepositoryBase;
 
@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class EntitiesRepository<T> implements RepositoryBase<T> {
+public abstract class SqlEntityRepository<T> implements RepositoryBase<T> {
     private Connection connection;
 
-    public EntitiesRepository(Connection connection) {
+    public SqlEntityRepository(Connection connection) {
         setConnection(connection);
     }
 

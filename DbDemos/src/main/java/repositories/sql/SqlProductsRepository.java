@@ -1,4 +1,4 @@
-package repositories;
+package repositories.sql;
 
 import entities.Product;
 
@@ -9,11 +9,11 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-public class ProductsRepository extends EntitiesRepository<Product> {
+public class SqlProductsRepository extends SqlEntityRepository<Product> {
 
     private Connection connection;
 
-    public ProductsRepository(Connection connection) {
+    public SqlProductsRepository(Connection connection) {
         super(connection);
     }
 
